@@ -1,67 +1,60 @@
 # envault
 
-Secure environment variable manager for teams. Store, encrypt, version, and share `.env` files across projects.
+> Secure environment variable manager for teams with AES-128 encryption, version history, and React UI.
+
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite)](https://vitejs.dev)
+[![Flask](https://img.shields.io/badge/Flask-3.0-000000?style=flat-square&logo=flask)](https://flask.palletsprojects.com)
+[![Cryptography](https://img.shields.io/badge/Fernet-AES--128-green?style=flat-square)](https://cryptography.io)
+[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=flat-square&logo=docker)](https://docker.com)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
+
+`#env-manager` `#secrets-management` `#react` `#vite` `#flask` `#encryption` `#developer-tools`
+
+---
 
 ## Features
 
-- Create projects and manage env variables
-- All values encrypted at rest (Fernet symmetric encryption)
-- Version history for each variable
-- Export as `.env` file
-- Show/hide values toggle
-- React frontend with dark UI
+- **Project Grouping:** Separate environment variables by project and environment.
+- **Encrypted at Rest:** All secret values are symmetrically encrypted using Fernet (AES-128-CBC + HMAC).
+- **Audit & Version History:** Track changes and previous values for every variable.
+- **Export to `.env`:** One-click download of project configs as ready-to-use `.env` files.
+- **Show/Hide Toggle:** Protect sensitive API keys and secrets from screen peering.
 
-## Architecture
+## Quick Start
 
-```
-frontend/     React + Vite
-backend/      Flask + SQLAlchemy + SQLite
-```
-
-## Setup
-
-### With Docker
+### Docker Compose
 
 ```bash
 docker compose up --build
 ```
 
-### Manual
+Access frontend at `http://localhost:3000` (API running on `http://localhost:5000`).
+
+### Manual Setup
 
 ```bash
-# backend
+# Backend
 cd backend
 pip install -r requirements.txt
 python app.py
 
-# frontend
-cd frontend
+# Frontend
+cd ../frontend
 npm install
 npm run dev
 ```
 
-Backend runs on :5000, frontend on :3000 (proxies API requests).
-
-## API
+## API Reference
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | /api/projects | List projects |
-| POST | /api/projects | Create project |
-| DELETE | /api/projects/:id | Delete project |
-| GET | /api/projects/:id/variables | List variables (decrypted) |
-| POST | /api/projects/:id/variables | Add variable |
-| PUT | /api/variables/:id | Update variable |
-| DELETE | /api/variables/:id | Delete variable |
-| GET | /api/variables/:id/history | Variable change history |
-| GET | /api/projects/:id/export | Export as .env text |
-
-## Security
-
-Values are encrypted with Fernet (AES-128-CBC). The key is generated on first run and stored in `backend/.secret.key`. Keep this file safe.
-
-## TODO
-
-- [ ] user auth
-- [ ] import .env file
-- [ ] team sharing with access control
+| `GET` | `/api/projects` | List all projects |
+| `POST` | `/api/projects` | Create a project |
+| `DELETE` | `/api/projects/:id` | Delete project |
+| `GET` | `/api/projects/:id/variables` | Get decrypted variables for project |
+| `POST` | `/api/projects/:id/variables` | Add variable to project |
+| `PUT` | `/api/variables/:id` | Update variable key/value |
+| `DELETE` | `/api/variables/:id` | Delete variable |
+| `GET` | `/api/variables/:id/history` | Get revision history for variable |
+| `GET` | `/api/projects/:id/export` | Download `.env` formatted plain text |
