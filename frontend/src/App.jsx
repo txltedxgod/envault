@@ -5,6 +5,10 @@ const api = async (url, opts = {}) => {
         headers: { 'Content-Type': 'application/json' },
         ...opts
     })
+    if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw new Error(err.error || res.statusText)
+    }
     return res.json()
 }
 
@@ -72,6 +76,7 @@ export default function App() {
 
     async function exportEnv() {
         const res = await fetch(`/api/projects/${activeProject.id}/export`)
+        if (!res.ok) return
         const text = await res.text()
         const blob = new Blob([text], { type: 'text/plain' })
         const url = URL.createObjectURL(blob)
@@ -79,6 +84,7 @@ export default function App() {
         a.href = url
         a.download = `${activeProject.name}.env`
         a.click()
+        setTimeout(() => URL.revokeObjectURL(url), 1000)
     }
 
     return (
