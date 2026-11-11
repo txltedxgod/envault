@@ -2,7 +2,12 @@ __pycache__/
 *.pyc
 .env
 venv/
+.venv/
+.pytest_cache/
+.ruff_cache/
 *.db
+.secret.key
+backend/.secret.key
 .DS_Store
 node_modules/
 frontend/dist/
